@@ -1,2 +1,3 @@
-venv/
+v-env/
 db.sqlite3
+inspect_db

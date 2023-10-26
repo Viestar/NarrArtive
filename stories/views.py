@@ -5,6 +5,6 @@ from django.template import loader
 
 
 def landingPage(request):
-    """ Retrieves the landing page """
-    land_page = loader.get_template('landing_page.html')
+    """Retrieves the landing page"""
+    land_page = loader.get_template("landing_page.html")
     return HttpResponse(land_page.render())

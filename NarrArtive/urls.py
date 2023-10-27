@@ -67,6 +67,13 @@ urlpatterns = [
     #     ),
     # ),
     path(
+        route="users/",
+        view=include(
+            ('users.urls', 'users'),
+            namespace="users"
+        )
+    ),
+    path(
         route='auth/',
         view=include('allauth.urls')
     ),

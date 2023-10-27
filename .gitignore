@@ -1,4 +1,5 @@
-v-env/
 db.sqlite3
 inspect_db
-stories/migrations
+stories/migrations/
+v-env/
+users/migrations/

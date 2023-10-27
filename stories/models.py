@@ -1,18 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
-
-
-class User(AbstractUser):
-    """Extension of the django inbuilt user model"""
-
-    bio = models.TextField(null=True)
-    avatar = models.ImageField(null=True, default="avatar.svg")
-    groups = models.ManyToManyField(Group, related_name="stories_users_groups")
-    user_permissions = models.ManyToManyField(
-        Permission, related_name="stories_users_user_permissions"
-    )
-    # ...
-
+from users.models import User
 
 class Genre(models.Model):
     """Genre of the story"""

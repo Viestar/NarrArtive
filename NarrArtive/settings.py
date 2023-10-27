@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "stories.apps.StoriesConfig",
-    # "djstripe",
+    "djstripe",
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'users',
+    'django.contrib.humanize'
 ]
 
 MIDDLEWARE = [
@@ -139,3 +141,10 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+##########       PAYMENTS         ###########
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
+
+##########       PAYMENTS         ###########

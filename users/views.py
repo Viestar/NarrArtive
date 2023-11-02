@@ -1,155 +1,249 @@
-import json
-
-import stripe
-from allauth.account.views import (
-    PasswordChangeView as AllauthPasswordChangeView,
-    EmailView as AllauthEmailView,
-)
-from allauth.account.adapter import get_adapter
-from allauth.account import signals
-from allauth.account.models import EmailAddress
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib import messages
-from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
-from django.http import JsonResponse
-from django.shortcuts import redirect
-from django.urls import reverse
-from django.views.generic import TemplateView, UpdateView
-from djstripe.models import Customer
-from users.forms import AccountForm
-from users.email import subscribe_to_mailing_list, unsubscribe_from_mailing_list
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+# from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from .models import *
+from .forms import *
+from django.views.decorators.csrf import csrf_exempt
 
-class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = "users/dashboard.html"
+def landingPage(request):
+    """ Delivers the landing page with a few stories"""
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains=q) |
+        Q(name__icontains=q) |
+        Q(description__icontains=q))
+
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))[0:9]
+    topics = Topic.objects.all()[0:6]
+    subjects_count = topics.count()
+    room_count = rooms.count()
+    context = {'subjects_count': subjects_count, "rooms": rooms, "topics": topics, "room_messages": room_messages,
+               'room_count': room_count}
+    return render(request, 'landing_page.html', context)
+
+# Login page
+@csrf_exempt
+def loginPage(request):
+    page = 'login'
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    if request.method == "POST":
+        username = request.POST.get('username').lower()
+        password = request.POST.get('password')
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, "User does not exist")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Username or password Does not Exist")
+
+    context = {'page': page}
+    return render(request, 'login_register.html', context)
+
+@csrf_exempt
+@login_required(login_url='login')
+def user_profile(request, pk):
+    # user = get_user_model()
+    user = User.objects.get(id=pk)
+    rooms = user.room_set.all()
+    room_messages = user.message_set.all()
+    topics = Topic.objects.all()
+    context = {'topics': topics, 'user': user, 'rooms': rooms,
+               'room_messages': room_messages}
+    return render(request, 'user_profile.html', context)
+
+@csrf_exempt
+@login_required(login_url='login')
+def update_profile(request):
+    user = request.user
+    form = UserForm(instance=user)
+    if request.method == "POST":
+        form = UserForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', pk=user.id)
+    context = {'form': form}
+    return render(request, 'update_user_profile.html', context)
 
 
-class AccountView(LoginRequiredMixin, UpdateView):
-    template_name = "users/account.html"
-    form_class = AccountForm
+def logoutuser(request):
+    logout(request)
+    return redirect('home')
 
-    def get_success_url(self):
-        return reverse("users:account")
+@csrf_exempt
+def register_user(request):
+    form = MyUserCreationForm()
+    if request.method == 'POST':
+        form = MyUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)  # to access the user right away.
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "An error occurred during registration")
 
-    def get_object(self, queryset=None):
-        return self.request.user
-
-    def get_context_data(self, **kwargs):
-        data = super(AccountView, self).get_context_data(**kwargs)
-        data['password_changed'] = bool(self.request.GET.get("password_changed", False))
-        data['email_changed'] = bool(self.request.GET.get("email_changed", False))
-        return data
+    context = {"form": form}
+    return render(request, 'signup.html', context)
 
 
-class PasswordChangeView(AllauthPasswordChangeView):
+@login_required(login_url='login')
+def home(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains=q) |
+        Q(name__icontains=q) |
+        Q(description__icontains=q))
 
-    def get_success_url(self):
-        return reverse("users:account") + "?password_changed=True"
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))[0:9]
+    topics = Topic.objects.all()[0:6]
+    subjects_count = topics.count()
+    room_count = rooms.count()
+    context = {'subjects_count': subjects_count, "rooms": rooms, "topics": topics, "room_messages": room_messages,
+               'room_count': room_count}
+    return render(request, 'home.html', context)
 
 
-class EmailChangeView(AllauthEmailView):
-
-    def form_valid(self, form):
-        # copying allauths form validation to be
-        # as close to the original as possible.
-        # we could remove the signals since we are not using them,
-        # but I left them in if we need them at some point
-        email_address = form.save(self.request)
-        get_adapter(self.request).add_message(
-            self.request,
-            messages.INFO,
-            "account/messages/" "email_confirmation_sent.txt",
-            {"email": form.cleaned_data["email"]},
+# Rooms start
+@login_required(login_url='login')
+def room(request, pk):
+    room = Room.objects.get(id=pk)
+    room_messages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
+    topics = Topic.objects.all()
+    if request.method == "POST":
+        message = Message.objects.create(
+            user=request.user,
+            room=room,
+            body=request.POST.get('body'),
         )
-        signals.email_added.send(
-            sender=self.request.user.__class__,
-            request=self.request,
-            user=self.request.user,
-            email_address=email_address,
+        room.participants.add(request.user)
+        return redirect('room', pk=room.id)
+
+    context = {"topics": topics, "room": room, "room_messages": room_messages,
+               "participants": participants}
+    return render(request, 'room.html', context)
+
+@csrf_exempt
+@login_required(login_url="login")
+def createRoom(request):
+    topics = Topic.objects.all()
+    form = RoomForm()
+
+    if request.method == "POST":
+        print(request.POST)
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+
+        Room.objects.create(
+            host=request.user,
+            topic=topic,
+            name=request.POST.get('name'),
+            description=request.POST.get('description')
         )
-        # make the email address primary
-        email_address.set_as_primary()
-        # subscribe the user to the mailing list, if it is enabled
-        if self.request.user.newsletter:
-            subscribe_to_mailing_list(
-                email=email_address.email,
-                first=self.request.user.first_name,
-                last=self.request.user.last_name
-            )
-        # get all old email addresses for this user and delete them
-        # from the database and from the mailing list
-        for email in EmailAddress.objects.filter(
-            user=self.request.user
-        ).exclude(
-            pk=email_address.pk
-        ):
-            unsubscribe_from_mailing_list(
-                email=email.email
-            )
-            email.delete()
-        return super(EmailChangeView, self).form_valid(form)
+        return redirect('home')
+    context = {'form': form, 'topics': topics}
+    return render(request, 'room_form.html', context)
 
-    def get_success_url(self):
-        # on a successfull email change, we are going to redirect
-        # the user to the main account page
-        return reverse("users:account") + "?email_changed=True"
+@csrf_exempt
+@login_required(login_url="login")
+def updateRoom(request, pk):
+    room = Room.objects.get(id=pk)
+    form = RoomForm(instance=room)
+    topics = Topic.objects.all()
+    if request.user != room.host:
+        return HttpResponse("You can't edit sumn that isn't yours Okay?")
 
-    def post(self, request, *args, **kwargs):
-        # overriding the default post method to disable all
-        # the add/remove/send/primary actions here.
-        # we are going to handle them in form_valid
-        return super(AllauthEmailView, self).post(request, *args, **kwargs)
+    if request.method == "POST":
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        room.name = request.POST.get('name')
+        room.topic = topic
+        room.description = request.POST.get('description')
+        room.save()
+
+        return redirect('home')
+    context = {'topics': topics, 'form': form, 'room': room}
+    return render(request, 'room_form.html', context)
 
 
-class SubscriptionView(LoginRequiredMixin, TemplateView):
-    template_name = "users/subscription.html"
+@login_required(login_url="login")
+def deleteRoom(request, pk):
+    room = Room.objects.get(id=pk)
+
+    if request.user != room.host:
+        return HttpResponse("You arent allowed in here")
+
+    if request.method == "POST":
+        room.delete()
+        return redirect('home')
+    context = {'obj': message}
+    return render(request, 'delete.html', context)
+# Rooms end
 
 
-class BillingView(LoginRequiredMixin, UpdateView):
-
-    def post(self, request, *args, **kwargs):
-        url = self.request.POST.get("url", False)
-        if not url:
-            url = self.request.build_absolute_uri(settings.LOGIN_REDIRECT_URL)
-
-        customer, created = Customer.get_or_create(request.user)
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        response = stripe.billing_portal.Session.create(
-            customer=customer.id,
-            return_url=url,
-        )
-        return redirect(to=response.url, permanent=False)
-
-    def get(self, request, *args, **kwargs):
-        raise PermissionDenied
+# Messages start
+@login_required(login_url='login')
+def message(request, pk):
+    message = Message.objects.get(id=pk)
+    context = {'message': message}
+    return render(request, 'message.html', context)
 
 
-class CheckoutView(LoginRequiredMixin, UpdateView):
+@login_required(login_url="login")
+def delete_message(request, pk):
+    message = Message.objects.get(id=pk)
 
-    def post(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-        plan_id = data.get("priceId", False)
+    if request.user != message.user:
+        return HttpResponse("You arent allowed in here")
 
-        if not plan_id:
-            raise PermissionDenied
+    if request.method == "POST":
+        message.delete()
+        return redirect('home')
+    return render(request, 'delete.html', {'obj': message})
 
-        customer, created = Customer.get_or_create(request.user)
 
-        stripe.api_key = settings.STRIPE_SECRET_KEY
+@login_required(login_url='login')
+def update_message(request, pk):
+    message = Message.objects.get(id=pk)
+    form = MessageForm(instance=message)
 
-        url = f"{self.request.scheme}://{self.request.get_host()}/"
-        session = stripe.checkout.Session.create(
-            customer=customer.id,
-            payment_method_types=['card'],
-            line_items=[{
-                'price': plan_id,
-                'quantity': 1,
-            }],
-            mode='subscription',
-            success_url=url,
-            cancel_url=url,
-        )
-        return JsonResponse({"id": session['id']})
+    if request.method == "POST":
+        form = MessageForm(request.POST, instance=message)
+        if form.is_valid:
+            form.save()
+            return redirect('room')
+    context = {"form": form}
+    return render(request, 'message_form.html', context)
 
-    def get(self, request, *args, **kwargs):
-        raise PermissionDenied
+# messages end
+
+
+# topics
+@login_required(login_url='login')
+def topics(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    topics = Topic.objects.filter(name__icontains=q)
+    subjects_count = topics.count()
+    context = {'topics': topics, 'subjects_count': subjects_count}
+    return render(request, 'topics.html', context)
+
+
+# activities
+@login_required(login_url='login')
+def activities(request):
+    room_messages = Message.objects.all()
+    context = {'room_messages': room_messages}
+    return render(request, 'activity.html', context)

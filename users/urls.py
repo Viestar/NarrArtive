@@ -1,49 +1,22 @@
 from django.urls import path
+from . import views
 
-from .views import (
-    DashboardView,
-    AccountView,
-    PasswordChangeView,
-    BillingView,
-    CheckoutView,
-    SubscriptionView,
-EmailChangeView,
-)
 
 urlpatterns = [
-    path(
-        route='',
-        view=DashboardView.as_view(),
-        name="dashboard"
-    ),
-    path(
-        route='account/',
-        view=AccountView.as_view(),
-        name="account"
-    ),
-    path(
-        route='account/change-password/',
-        view=PasswordChangeView.as_view(),
-        name="change-password"
-    ),
-    path(
-        route='account/change-email/',
-        view=EmailChangeView.as_view(),
-        name="change-email"
-    ),
-    path(
-        route='subscription/',
-        view=SubscriptionView.as_view(),
-        name="subscription"
-    ),
-    path(
-        route='billing/',
-        view=BillingView.as_view(),
-        name='billing'
-    ),
-    path(
-        route='checkout/',
-        view=CheckoutView.as_view(),
-        name="checkout"
-    ),
+    path('', views.landingPage, name="landing_page"),
+    path('login/', views.loginPage, name="login"),
+    path('register/', views.register_user, name="register"),
+    path('logout/', views.logoutuser, name="logout"),
+    path('home/', views.home, name="home"),
+    path('room/<str:pk>/', views.room, name="room"),
+    path('create-room/', views.createRoom, name="create-room"),
+    path('update-room/<str:pk>/', views.updateRoom, name="update-room"),
+    path('update-message/<str:pk>/', views.update_message, name="update-message"),
+    path('delete-room/<str:pk>/', views.deleteRoom, name="delete-room"),
+    path('delete-message/<str:pk>/', views.delete_message, name="delete-message"),
+    path('message/<str:pk>/', views.message, name="message"),
+    path('user-profile/<str:pk>/', views.user_profile, name="user-profile"),
+    path('update-profile/', views.update_profile, name="update-profile"),
+    path('topics/', views.topics, name="topics"),
+    path('activities/', views.activities, name="activities"),
 ]

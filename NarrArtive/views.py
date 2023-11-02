@@ -5,14 +5,9 @@ from django.views.generic import TemplateView, FormView
 
 from .forms import SupportForm
 
-
-class HomeView(TemplateView):
-    template_name = "pages/home.html"
-
-
 class TermsView(TemplateView):
     """ Terms and Conditions of NarrAtive """
-    template_name = "pages/tos.html"
+    template_name = "tos.html"
 
     def get_context_data(self, **kwargs):
         """ Retrieves data about the app to include in Terms """
@@ -24,7 +19,7 @@ class TermsView(TemplateView):
 
 class PrivacyView(TemplateView):
     """ User data privacy policy at NarrArtive """
-    template_name = "pages/privacy-policy.html"
+    template_name = "privacy-policy.html"
 
     def get_context_data(self, **kwargs):
         """ Retrieves data about the app to include in privacy policy """
@@ -34,7 +29,7 @@ class PrivacyView(TemplateView):
 
 
 class SupportView(FormView):
-    template_name = "pages/support.html"
+    template_name = "support.html"
     form_class = SupportForm
 
     def get_success_url(self):

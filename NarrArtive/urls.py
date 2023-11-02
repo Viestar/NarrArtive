@@ -1,8 +1,7 @@
-"""
-URL configuration for NarrArtive project.
+"""Bridger URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
+    https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -14,11 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
-from stories.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import (
-    HomeView,
     TermsView,
     PrivacyView,
     SupportView,
@@ -27,14 +27,10 @@ from .views import (
 )
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('users.urls')),
+    path('api/', include('users.api.urls')),
     path(
-        # Cleared
-        route='',
-        view=HomeView.as_view(),
-        name="home"
-    ),
-    path(
-        # Cleared
         route='terms-of-service/',
         view=TermsView.as_view(),
         name="tos"
@@ -54,34 +50,6 @@ urlpatterns = [
         view=SiteMapView.as_view(),
         name="sitemap"
     ),
-    path(
-        route='robots.txt',
-        view=RobotsView.as_view(),
-        name="robots"
-    ),
-    # path(
-    #     route='stripe/',
-    #     view=include(
-    #         "djstripe.urls",
-    #         namespace="djstripe"
-    #     ),
-    # ),
-    path(
-        route="users/",
-        view=include(
-            ('users.urls', 'users'),
-            namespace="users"
-        )
-    ),
-    path(
-        route='auth/',
-        view=include('allauth.urls')
-    ),
-    path(
-        route='admin/',
-        view=admin.site.urls,
-    ),
-    # path(
-    #     route='captcha/',
-    # ),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

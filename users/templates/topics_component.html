@@ -6,10 +6,10 @@
 
     <ul class="topics__list">
         <li>
-            <a href="{% url 'user-profile' user.id %}?q={{user.id}}">My Stories <span> {{topic.room_set.all.count}}</span></a>
+            <a href="{% url 'user-profile' user.id %}?q={{user.id}}">My Stories </a>
         </li>
         <li>
-            <a href="{% url 'home' %}?q={{topic.name}}">Dashboard <span> {{topic.room_set.all.count}}</span></a>
+            <a href="{% url 'home' %}?q={{topic.name}}">Dashboard </a>
         </li>
         <li>
             <a href="{% url 'home' %}?q={{topic.name}}">Messages <span> {{topic.room_set.all.count}}</span></a>

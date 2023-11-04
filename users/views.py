@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
@@ -143,7 +144,6 @@ def createRoom(request):
     form = RoomForm()
 
     if request.method == "POST":
-        print(request.POST)
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
 

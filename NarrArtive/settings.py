@@ -42,7 +42,19 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'corsheaders',
+    'channels',
+    'chats',
+    
 ]
+
+###### Messaging Asynchronous conection #######
+ASGI_APPLICATION = 'NarrArtive.asgi.application'
+CHANNEL_LAYERS = {
+	"default": {
+		"BACKEND": "channels.layers.InMemoryChannelLayer"
+	}
+}
+
 
 AUTH_USER_MODEL = 'users.User'
 

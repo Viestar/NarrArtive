@@ -22,12 +22,13 @@
                         <h3>{{user.first_name}} {{user.last_name}}</h3>
                         <p>@{{user.username}}</p>
                         {% if request.user == request.user %}
-                        <a href="{% url 'update-profile' %}" class="btn btn--main btn--pill">Edit Profile</a>
+                        <a href="{% url 'chats:chat' user.username %}" class="btn btn--main btn--pill">Send me a Message</a>
                         {% endif %}
                     </div>
                     <div class="profile__about">
                         <h3>About</h3>
                         <p>
+                            {{user.bio}}
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur illo tenetur
                             facilis sunt nemo debitis quisquam hic atque aut? Ducimus alias placeat optio
                             accusamus repudiandae quis ab ex exercitationem rem?

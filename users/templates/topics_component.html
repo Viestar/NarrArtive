@@ -12,7 +12,7 @@
             <a href="{% url 'home' %}?q={{topic.name}}">Dashboard </a>
         </li>
         <li>
-            <a href="{% url 'home' %}?q={{topic.name}}">Messages <span> {{topic.room_set.all.count}}</span></a>
+            <a href="">Messages <span> {{topic.room_set.all.count}}</span></a>
         </li>
         <li>
             <a href="{% url 'home' %}?q={{topic.name}}">Notifications <span> {{topic.room_set.all.count}}</span></a>
@@ -32,7 +32,7 @@
 
     <ul class="topics__list">
         <li>
-            <a href="{% url 'home' %}" class="active">All <span>{{subjects_count}} Subjects</span></a>
+            <a href="{% url 'home' %}" class="active">All <span>{{subjects_count}} Genres</span></a>
         </li>
     </ul>
     {% for topic in topics %}

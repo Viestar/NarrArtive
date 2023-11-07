@@ -31,7 +31,8 @@
         </div>
         <div class="roomListRoom__content">
             <a href="{% url 'room' room.id %}">{{room.name}}</a>
-            <p>{{room.description}}</p>
+            <p>{{room.description|slice:":500"}} ...</p>
+	    <a href="{% url 'reading_time' room.id %}">Read full story</a>
         </div>
         <div class="roomListRoom__meta">
             <a href="{% url 'room' room.id %}" class="roomListRoom__joined">

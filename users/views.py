@@ -137,6 +137,27 @@ def room(request, pk):
                "participants": participants}
     return render(request, 'room.html', context)
 
+
+@login_required(login_url='login')
+def reading_time(request, pk):
+    room = Room.objects.get(id=pk)
+    room_messages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
+    topics = Topic.objects.all()
+    if request.method == "POST":
+        message = Message.objects.create(
+            user=request.user,
+            room=room,
+            body=request.POST.get('body'),
+        )
+        room.participants.add(request.user)
+        return redirect('room', pk=room.id)
+
+    context = {"topics": topics, "room": room, "room_messages": room_messages,
+               "participants": participants}
+    return render(request, 'reading_time.html', context)
+
+
 @csrf_exempt
 @login_required(login_url="login")
 def createRoom(request):

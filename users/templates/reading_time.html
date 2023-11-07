@@ -1,12 +1,7 @@
-{% extends 'main.html' %}
+{% extends 'main_copy.html' %}
 {% load static %}
 
 {% block content %}
-<section>
-    <div>
-	<img src="{% static 'images/landing_page.svg' %}" alt="">
-    </div>
-</section>
 <div style="margin-left: 2%; margin-right: 2%;">
     <div class="roomList__header">
         <div style="padding-top: 2.5%; margin-left: 6%;">
@@ -25,8 +20,6 @@
             </a>
         </div>
     </div>
-
-    {% for room in rooms %}
     <div class="roomList">
         <div class="roomListRoom">
             <div class="roomListRoom__header">
@@ -42,8 +35,12 @@
             </div>
             <div class="roomListRoom__content">
                 <a href="{% url 'room' room.id %}">{{room.name}}</a>
-		<p>{{room.description|slice:":500"}} ...</p>
-		<a href="{% url 'reading_time' room.id %}">Click here to read full Story</a>
+                <p>{{room.description}}</p>
+                <br/>
+                <p>Thank you for reading</p>
+                <br/>
+                <a href="{% url 'home' %}">Read more stories</a>
+
             </div>
             <div class="roomListRoom__meta">
                 <a href="{% url 'room' room.id %}" class="roomListRoom__joined">
@@ -62,7 +59,9 @@
                             d="M12 16c3.859 0 7-3.141 7-7s-3.141-7-7-7c-3.859 0-7 3.141-7 7s3.141 7 7 7zM12 4c2.757 0 5 2.243 5 5s-2.243 5-5 5-5-2.243-5-5c0-2.757 2.243-5 5-5z">
                         </path>
                     </svg>
-                    {{room.participants.all.count}} likes
+                    {{room.participants.all.count }} {% if room.participants.all.count == 1 %} Comment {% else %}
+                    Comments
+                    {% endif %}
                 </a>
                 <p class="roomListRoom__topic"><a href="{% url 'room' room.id %}">{{room.topic.name}}</a></p>
                 {% if request.user == room.host %}
@@ -74,7 +73,4 @@
             </div>
         </div>
     </div>
-    {% endfor %}
-</div>
-
-{% endblock content %}
+    {% endblock content %}

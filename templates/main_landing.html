@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'styles/style_gray.css' %}" />
+    <title>NarrArtive</title>
+</head>
+
+<body>
+
+    {% include 'navbar_copy.html' %}
+
+    {% block content %}
+
+
+
+    {% endblock %}
+
+    <script src="{% static 'javascript/script.js' %}"></script>
+</body>
+<footer style="text-align: center;">
+    <div class="container">
+        <div class="row">
+            <br>
+            <br>
+            <div class="col-sm-12 text-center copy">
+                &copy; NarrArtive Inc. 2023 - Explore, Create, Inspire &nbsp;·&nbsp; &nbsp;·&nbsp;
+                <a href="{% url "tos" %}" class="text-white-50">Terms of Service</a> &nbsp;·&nbsp;
+                <a href="{% url "privacy" %}" class="text-white-50">Privacy Policy</a> &nbsp;·&nbsp;
+                <a href="{% url "support" %}" class="text-white text-decoration-none float-end">Support</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</html>

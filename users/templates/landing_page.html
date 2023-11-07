@@ -1,12 +1,21 @@
-{% extends 'main.html' %}
+{% extends 'main_landing.html' %}
 {% load static %}
 
 {% block content %}
 <section>
     <div>
-	<img src="{% static 'images/landing_page.svg' %}" alt="">
+	<img src="{% static 'images/home_page.svg' %}" alt="">
+    </div>
+    <div>
+	<p> Hello this is a tag <p/>
     </div>
 </section>
+<section>
+    <div>
+	<p> THis is another tag <p/>
+    </div>
+</section>
+
 <div style="margin-left: 2%; margin-right: 2%;">
     <div class="roomList__header">
         <div style="padding-top: 2.5%; margin-left: 6%;">
@@ -43,7 +52,8 @@
             <div class="roomListRoom__content">
                 <a href="{% url 'room' room.id %}">{{room.name}}</a>
 		<p>{{room.description|slice:":500"}} ...</p>
-		<a href="{% url 'reading_time' room.id %}">Click here to read full Story</a>
+		<br/>
+		<a href="{% url 'reading_time' room.id %}">Read full Story</a>
             </div>
             <div class="roomListRoom__meta">
                 <a href="{% url 'room' room.id %}" class="roomListRoom__joined">

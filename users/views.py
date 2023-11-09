@@ -192,7 +192,7 @@ def updateRoom(request, pk):
 
             Room.objects.create(
                 host=request.user,
-                topic=Topic.objects.get_or_create(name=topic_name),
+                topic=topic,
                 name=request.POST.get('name'),
                 description=request.POST.get('description')
             )

@@ -70,7 +70,8 @@
                 <a href="{% url 'delete-room' room.id %}">Delete</a>
                 <a href="{% url 'update-room' room.id %}">edit</a>
                 {% else %}
-                <a href="{% url 'room' room.id %}">collaborate/comment</a>
+                <a href="{% url 'room' room.id %}">Comment</a>
+                <a href="{% url 'update-room' room.id %}">Collaborate</a>
                 {% endif %}
             </div>
         </div>

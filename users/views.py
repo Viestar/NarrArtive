@@ -184,8 +184,22 @@ def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room)
     topics = Topic.objects.all()
+
     if request.user != room.host:
-        return HttpResponse("You can't edit sumn that isn't yours Okay?")
+        if request.method == "POST":
+            topic_name = request.POST.get('topic')
+            topic, created = Topic.objects.get_or_create(name=topic_name)
+
+            Room.objects.create(
+                host=request.user,
+                topic=Topic.objects.get_or_create(name=topic_name),
+                name=request.POST.get('name'),
+                description=request.POST.get('description')
+            )
+            return redirect('home')
+        context = {'form': form, 'topics': topics}
+        return render(request, 'room_form.html', context)
+        
 
     if request.method == "POST":
         topic_name = request.POST.get('topic')

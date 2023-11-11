@@ -3,3 +3,4 @@ inspect_db
 stories/migrations/
 v-env/
 users/migrations/
+chats/migrations/

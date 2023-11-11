@@ -3,6 +3,7 @@ from django import forms
 
 
 class SupportForm(forms.Form):
+    """ Class with the form to use in asking for support """
     email = forms.EmailField(
         max_length=256,
         required=True

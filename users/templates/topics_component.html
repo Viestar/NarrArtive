@@ -15,7 +15,7 @@
             <a href="">Messages <span> {{topic.room_set.all.count}}</span></a>
         </li>
         <li>
-            <a href="{% url 'home' %}?q={{topic.name}}">Notifications <span> {{topic.room_set.all.count}}</span></a>
+            <a href="{% url 'activities' %}">Notifications <span> {{topic.room_set.all.count}}</span></a>
         </li>
         <li>
             <a href="{% url 'home' %}?q={{topic.name}}">Collaboration requests<span> {{topic.room_set.all.count}}</span></a>

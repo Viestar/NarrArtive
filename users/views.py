@@ -29,6 +29,7 @@ def landingPage(request):
 # Login page
 @csrf_exempt
 def loginPage(request):
+    """ View to handle logging of a user """
     page = 'login'
     if request.user.is_authenticated:
         return redirect('home')
@@ -55,6 +56,7 @@ def loginPage(request):
 @csrf_exempt
 @login_required(login_url='login')
 def user_profile(request, pk):
+    """ Function to preview the profile of a user """
     # user = get_user_model()
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
@@ -67,6 +69,7 @@ def user_profile(request, pk):
 @csrf_exempt
 @login_required(login_url='login')
 def update_profile(request):
+    """ Handles editing of the users details """
     user = request.user
     form = UserForm(instance=user)
     if request.method == "POST":
@@ -79,11 +82,13 @@ def update_profile(request):
 
 
 def logoutuser(request):
+    """ Handles users getting out of sessions """
     logout(request)
     return redirect('home')
 
 @csrf_exempt
 def register_user(request):
+    """ Handles registrations of new users """
     form = MyUserCreationForm()
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
@@ -102,6 +107,7 @@ def register_user(request):
 
 @login_required(login_url='login')
 def home(request):
+    """ Handles everything that is show on the home page"""
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     rooms = Room.objects.filter(
         Q(topic__name__icontains=q) |
@@ -120,6 +126,7 @@ def home(request):
 # Rooms start
 @login_required(login_url='login')
 def room(request, pk):
+    """ Handles everything to do with the Story telling room """
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all().order_by('-created')
     participants = room.participants.all()
@@ -140,6 +147,7 @@ def room(request, pk):
 
 @login_required(login_url='login')
 def reading_time(request, pk):
+    """ Delivers a page dedicated to just reading the story """
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all().order_by('-created')
     participants = room.participants.all()
@@ -161,6 +169,7 @@ def reading_time(request, pk):
 @csrf_exempt
 @login_required(login_url="login")
 def createRoom(request):
+    """ Helps tpo create a new room to start telling stories """
     topics = Topic.objects.all()
     form = RoomForm()
 
@@ -181,6 +190,7 @@ def createRoom(request):
 @csrf_exempt
 @login_required(login_url="login")
 def updateRoom(request, pk):
+    """ Helps to edit a story by either the host or a collaborator """
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room)
     topics = Topic.objects.all()
@@ -216,6 +226,7 @@ def updateRoom(request, pk):
 
 @login_required(login_url="login")
 def deleteRoom(request, pk):
+    """ Deletes a story room incase it isnt needed anymore """
     room = Room.objects.get(id=pk)
 
     if request.user != room.host:
@@ -232,6 +243,7 @@ def deleteRoom(request, pk):
 # Messages start
 @login_required(login_url='login')
 def message(request, pk):
+    """ Creates the a new comment/message"""
     message = Message.objects.get(id=pk)
     context = {'message': message}
     return render(request, 'message.html', context)
@@ -239,6 +251,7 @@ def message(request, pk):
 
 @login_required(login_url="login")
 def delete_message(request, pk):
+    """ Deletes a created comment/message """
     message = Message.objects.get(id=pk)
 
     if request.user != message.user:
@@ -252,6 +265,7 @@ def delete_message(request, pk):
 
 @login_required(login_url='login')
 def update_message(request, pk):
+    """ Helps to edit the message/comment by the writer """
     message = Message.objects.get(id=pk)
     form = MessageForm(instance=message)
 
@@ -269,6 +283,7 @@ def update_message(request, pk):
 # topics
 @login_required(login_url='login')
 def topics(request):
+    """ Handdles all topics or genres """
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     topics = Topic.objects.filter(name__icontains=q)
     subjects_count = topics.count()
@@ -279,6 +294,7 @@ def topics(request):
 # activities
 @login_required(login_url='login')
 def activities(request):
+    """ Handles the notoifications part of the applications """
     room_messages = Message.objects.all()
     context = {'room_messages': room_messages}
     return render(request, 'activity.html', context)

@@ -45,33 +45,33 @@
 
 ### Languages
 
-- [ ]  Python, JavaScript, HTML and CSS
-- [x]  Php, Javascript, HTML and CSS
+- [x]  Python, JavaScript, HTML and CSS
+- [ ]  Php, Javascript, HTML and CSS
 
-> According to the back-end developer Sylvester,  Python is his mother tongue, so we will be using it for this project, no more discussion on languages.
+> According to the back-end developer Sylvester,  Python is his mother tongue, so i will be using it for this project, no more discussion on languages.
 > 
 
 ### Frameworks
 
 - Backend
-    - [ ]  Django
-    - [x]  Laravel
+    - [x]  Django
+    - [ ]  Laravel
     
     > Basing on python, django is preferred framework, quickest way to production
     > 
 - Front-end
-    - [ ]  React
-    - [x]  Flutter
+    - [x]  JavaScrip
+    - [ ]  Flutter
     
     > Sylvester the front-end developer has experience in JavaScript therefore React is preferred and could be easier for Sylvester to learn, Flutter requires learning a whole new language called Dart.
     > 
 
 ### Database
 
-- [x]  MySQL
-- [ ]  PostgreSQL
+- [ ]  MySQL
+- [x]  PostgreSQL
 
-> Both designers have experience with MySQL but PostgreSQL is more compatible with Django, Strong support for complex queries, joins, and transactions. Proven reliability and data integrity Sylvester will have to learn this technology.
+> The designer has experience with MySQL but PostgreSQL is more compatible with Django, Strong support for complex queries, joins, and transactions. Proven reliability and data integrity Sylvester will have to learn this technology.
 > 
 
 ### Authentication and Authorization
@@ -84,14 +84,14 @@
 - [x]  AWS
 - [ ]  Google Cloud
 
-> According to ALX servers, we will be using AWS also because of its extensive services, scalability, and popularity, which provides a robust foundation for hosting and scaling the platform
+> According to ALX servers, I will be using AWS also because of its extensive services, scalability, and popularity, which provides a robust foundation for hosting and scaling the platform
 > 
 
 ### Development tools
 
 - Visual Studio Code: Code editor or integrated development environment (IDE) - has a lot of extensions.
 - Git: Version control system for code management  and deployment.
-- **Project management tools**: We will use notion for task tracking and project management.
+- **Project management tools**: I will use notion for task tracking and project management.
 
 ### Other technologies
 
@@ -99,7 +99,7 @@
 - **Real-time Collaboration**: Socket.io: For implementing real-time chat and collaboration features.
 - **UI/UX Design:** Bootstrap or Material-UI: For building responsive and visually appealing user interfaces.
 - **Security:** Helmet.js: For securing your web application against common security vulnerabilities.
-- **Project management tools:** We will use notion for task tracking and project management.
+- **Project management tools:** I will use notion for task tracking and project management.
 
 ## Risks
 
@@ -184,17 +184,17 @@
     
 - **Populating the App with Data**:
     
-    To populate the app with data, we will use a combination of approaches:
+    To populate the app with data, I will use a combination of approaches:
     
-    - **Seed Data**: We will create seed scripts to populate the database with initial data, such as sample stories, user profiles, and community guidelines. These scripts will be run during the application's setup process
+    - **Seed Data**: I will create seed scripts to populate the database with initial data, such as sample stories, user profiles, and community guidelines. These scripts will be run during the application's setup process
     - **User-Generated Content:** The primary source of data will be user-generated content. As users create stories, illustrations, and engage with the platform, their contributions will populate the database.
     - **Content Discovery:** Implement features that encourage content creation, such as challenges, prompts, or writing contests, to stimulate user-generated content.
 - **Testing**
     
-    Testing is a critical aspect of our development process, and we will employ the following tools and practices:
+    Testing is a critical aspect of our development process, and i will employ the following tools and practices:
     
-    - **Unit Testing:** We will write unit tests for critical components and functions using testing frameworks like Jest or Mocha.
-    - **Integration Testing:** We will perform integration testing to ensure that different parts of the application work seamlessly together.
+    - **Unit Testing:** I will write unit tests for critical components and functions using testing frameworks like Jest or Mocha.
+    - **Integration Testing:** I will perform integration testing to ensure that different parts of the application work seamlessly together.
     - **End-to-End (E2E) Testing:** E2E tests using tools like Cypress or Puppeteer will simulate user interactions and workflows to catch UI and functional issues
     - **Continuous Integration (CI):** We will set up CI pipelines (e.g., using GitHub Actions or Travis CI) to automate testing and ensure that new code is continuously validated
     - **Code Reviews:** Code reviews are a manual testing step where team members review each other's code for quality, correctness, and adherence to coding standards.
@@ -222,7 +222,7 @@
     Our decision to re-implement a solution for collaborative storytelling and art is based on several key specifications:
     
     <aside>
-    💡 **Collaborative Focus:** Existing platforms like Wattpad and DeviantArt are primarily designed for individual content creation and display, with limited emphasis on collaboration. We aim to create a platform that places collaborative storytelling and art creation at its core.
+    💡 **Collaborative Focus:** Existing platforms like Wattpad and DeviantArt are primarily designed for individual content creation and display, with limited emphasis on collaboration. I aim to create a platform that places collaborative storytelling and art creation at its core.
     
     </aside>
     
@@ -232,7 +232,7 @@
     </aside>
     
     <aside>
-    💡 **Inclusive Community:** We intend to create a platform that fosters a diverse and inclusive community where writers and artists from various backgrounds can come together to collaborate and share their creative works
+    💡 **Inclusive Community:** I intend to create a platform that fosters a diverse and inclusive community where writers and artists from various backgrounds can come together to collaborate and share their creative works
     
     </aside>
     

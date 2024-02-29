@@ -14,7 +14,7 @@
         
     - **Role2**: Front-end Developer
         
-        Faith is responsible for the front-end development of the platform, focusing on the user interface, design, and user experience. Her expertise in frontend technologies and design ensures that the platform is visually appealing and user-friendly.
+        Sylvester is still responsible for the front-end development of the platform, focusing on the user interface, design, and user experience. His expertise again in frontend technologies and design ensures that the platform is visually appealing and user-friendly.
         
 
 ## Challenge Statement
@@ -63,7 +63,7 @@
     - [ ]  React
     - [x]  Flutter
     
-    > Faith the front-end developer has experience in JavaScript therefore React is preferred and could be easier for Faith to learn, Flutter requires learning a whole new language called Dart.
+    > Sylvester the front-end developer has experience in JavaScript therefore React is preferred and could be easier for Sylvester to learn, Flutter requires learning a whole new language called Dart.
     > 
 
 ### Database

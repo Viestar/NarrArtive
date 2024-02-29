@@ -1,0 +1,197 @@
+{% extends 'main_landing.html' %}
+{% load static %}
+
+{% block content %}
+<section>
+    <div>
+        <img src="{% static 'images/landing_page.png' %}" alt="">
+    </div>
+</section>
+<section id="about">
+    <div style="margin: 10%; text-align: center;">
+        <div style="text-align: center;" class="roomListRoom__content">
+            <a style="font-size: xx-large; font-weight: bold; text-align: center;" href="">About</a>
+            <p>NarrArtive is a unique platform that reserves the art of collaborative and imaginative traditional
+                storytelling, brings individuals from diverse backgrounds, cultures, and
+                experiences together to
+                collaboratively craft engaging stories enriched by visual art. Writers, artists, and enthusiasts
+                converge to create a
+                vibrant community where the fusion of words and images weaves captivating narratives</p>
+            <div style="padding-top: 2.5%; padding-left: 10%; margin-right: 6%; text-align: center;">
+                <a class="btn btn--main" href="{% url 'home' %}">
+                    Start reading stories now
+                </a>
+            </div>
+        </div>
+        <br />
+        <br />
+
+        <div style="text-align: center;" class="roomListRoom__content">
+            <a style="font-size: xx-large; font-weight: bolder; font-weight:bold;">Celebrate life</a>
+            <p>Writing about life is celebrating it, therefore we celebrate the power of diversity, where different
+                perspectives and life stories enrich the
+                storytelling experience.
+                It's a space where anyone can contribute their unique voice to create something extraordinary. Here,
+                many people can
+                collaborate seamlessly to tell one story, forging a shared narrative that transcends individual
+                boundaries. Join us and
+                be a part of a collaborative world where creativity knows no boundaries.</p>
+            <div style="padding-top: 2.5%; padding-left: 7%; margin-right: 6%; text-align: center;">
+                <a class="btn btn--main" href="{% url 'create-room' %}">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <title>add</title>
+                        <path
+                            d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z">
+                        </path>
+                    </svg>
+                    Create your Story now
+                </a>
+            </div>
+        </div>
+        <br />
+        <div style="text-align: center;" class="roomListRoom__content">
+            <a style="font-size: xx-large; font-weight: bolder; font-weight:bold;">Collaborate with others</a>
+            <p>"Embark on a creative journey with us at NarrArtive! We invite writers, artists, and enthusiasts from all
+                walks of life
+                to join hands in crafting captivating stories enriched by the fusion of words and images. Your unique
+                voice and
+                perspective can contribute to the tapestry of collaborative storytelling. Let's transcend boundaries
+                together and create
+                something extraordinary. Join us now and be a part of a community where creativity knows no limits –
+                where your
+                collaboration adds depth and richness to the narrative tapestry of NarrArtive."</p>
+            <div style="padding-top: 2.5%; padding-left: 4%; margin-right: 6%; text-align: center;">
+                <a class="btn btn--main" href="{% url 'create-room' %}">
+                    Get Started now
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div>
+        <img src="{% static 'images/fire_stories.png' %}" alt="">
+    </div>
+</section>
+<section id="stories">
+    <div style="margin-left: 2%; margin-right: 2%;">
+        <div class="roomList__header">
+            <div style="padding-top: 2.5%; margin-left: 6%;">
+                <h2>Trending Stories</h2>
+                <p>Browse {{room_count}} available Stories</p>
+            </div>
+            <div style="padding-top: 2.5%; margin-right: 6%;">
+                <a class="btn btn--main" href="{% url 'create-room' %}">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <title>add</title>
+                        <path
+                            d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z">
+                        </path>
+                    </svg>
+                    Create Story
+                </a>
+            </div>
+        </div>
+
+        {% for room in rooms %}
+        <div class="roomList">
+            <div class="roomListRoom">
+                <div class="roomListRoom__header">
+                    <a href="{% url 'user-profile' room.host.id %}" class="roomListRoom__author">
+                        <div class="avatar avatar--small">
+                            <img src="{{ room.host.avatar.url }}" />
+                        </div>
+                        <span>@{{ room.host.username }}</span>
+                    </a>
+                    <div class="roomListRoom__actions">
+                        <span>Created {{room.created|timesince}}</span>
+                    </div>
+                </div>
+                <div class="roomListRoom__content">
+                    <a href="{% url 'room' room.id %}">{{room.name}}</a>
+                    <p>{{room.description|slice:":500"}} ...</p>
+                    <br />
+                    <a href="{% url 'reading_time' room.id %}">Read full Story</a>
+                </div>
+                <div class="roomListRoom__meta">
+                    <a href="{% url 'room' room.id %}" class="roomListRoom__joined">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                            viewBox="0 0 32 32">
+                            <title>user-group</title>
+                            <path
+                                d="M30.539 20.766c-2.69-1.547-5.75-2.427-8.92-2.662 0.649 0.291 1.303 0.575 1.918 0.928 0.715 0.412 1.288 1.005 1.71 1.694 1.507 0.419 2.956 1.003 4.298 1.774 0.281 0.162 0.456 0.487 0.456 0.85v4.65h-4v2h5c0.553 0 1-0.447 1-1v-5.65c0-1.077-0.56-2.067-1.461-2.584z">
+                            </path>
+                            <path
+                                d="M22.539 20.766c-6.295-3.619-14.783-3.619-21.078 0-0.901 0.519-1.461 1.508-1.461 2.584v5.65c0 0.553 0.447 1 1 1h22c0.553 0 1-0.447 1-1v-5.651c0-1.075-0.56-2.064-1.461-2.583zM22 28h-20v-4.65c0-0.362 0.175-0.688 0.457-0.85 5.691-3.271 13.394-3.271 19.086 0 0.282 0.162 0.457 0.487 0.457 0.849v4.651z">
+                            </path>
+                            <path
+                                d="M19.502 4.047c0.166-0.017 0.33-0.047 0.498-0.047 2.757 0 5 2.243 5 5s-2.243 5-5 5c-0.168 0-0.332-0.030-0.498-0.047-0.424 0.641-0.944 1.204-1.513 1.716 0.651 0.201 1.323 0.331 2.011 0.331 3.859 0 7-3.141 7-7s-3.141-7-7-7c-0.688 0-1.36 0.131-2.011 0.331 0.57 0.512 1.089 1.075 1.513 1.716z">
+                            </path>
+                            <path
+                                d="M12 16c3.859 0 7-3.141 7-7s-3.141-7-7-7c-3.859 0-7 3.141-7 7s3.141 7 7 7zM12 4c2.757 0 5 2.243 5 5s-2.243 5-5 5-5-2.243-5-5c0-2.757 2.243-5 5-5z">
+                            </path>
+                        </svg>
+                        {{room.participants.all.count}} likes
+                    </a>
+                    <p class="roomListRoom__topic"><a href="{% url 'room' room.id %}">{{room.topic.name}}</a></p>
+                    {% if request.user == room.host %}
+                    <a href="{% url 'delete-room' room.id %}">Delete</a>
+                    <a href="{% url 'update-room' room.id %}">edit</a>
+                    {% else %}
+                    <a href="{% url 'room' room.id %}">Comment</a>
+                    <a href="{% url 'update-room' room.id %}">Collaborate</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<section inspire="inspire">
+    <div style="margin: 10%; text-align: center;">
+        <div style="margin-right: 2.5%;" class="roomListRoom__header">
+            <div class="roomListRoom__content">
+                <a style="font-size: xx-large; text-decoration: dashed; font-weight: bold; text-align: center;"
+                    href="">Inspiration</a>
+                <p>NarrArtive was inspired by our shared love for storytelling and the belief that collaboration among
+                    people from diverse
+                    backgrounds can create captivating narratives. Growing up in extended African families, we witnessed
+                    the rich tradition
+                    of collaborative storytelling as a significant part of our leisure time. We realized that this art
+                    of storytelling
+                    should not be forgotten. Our project is a testament to the power of combining words and images to
+                    unite and craft
+                    stories that transcend individual boundaries. It is owed to a passion for inclusivity, diversity,
+                    and the celebration of
+                    individual voices.</p>
+                <br />
+                <div style="padding-top: 2.5%; padding-left: 6%; margin-right: 6%; text-align: center;">
+                    <a class="btn btn--main" href="{% url 'create-room' %}">
+                        Get Started Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="developers">
+    <div style="margin: 10%; text-align: center;">
+        <a style="font-size: xx-large; font-weight: bold; text-align: center;" href="">Meet the Developers</a>
+        <br />
+        </>
+        <br />
+        <div style="margin-right: 2.5%;" class="roomListRoom__header">
+        <div style="margin-left: 2.5%;" class="roomListRoom__content">
+                <a href="https://github.com/Viestar" style="font-size: xx-large; font-weight: bolder; font-weight:bold;" >Sylvester Mberenge</a>
+                <img src="{% static 'images/avatar.svg' %}" alt="">
+                <p>Backend Engineer</p>
+            </div>
+            <div class="roomListRoom__content">
+              <a style="font-size: xx-large; font-weight: bold; text-align: center;" href="https://github.com/Fayth">Faith Ampwera</a>
+                <img src="{% static 'images/avatar.svg' %}" alt="">
+                <p>Front-end engineer</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

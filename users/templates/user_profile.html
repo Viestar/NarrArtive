@@ -1,0 +1,57 @@
+{% include 'main.html' %}
+{% load static %}
+<section>
+    {% block content%}
+    <div class="profile-page layout layout--3">
+        <div class="container">
+            <!-- Topics Start -->
+            <div class="topics">
+                {% include 'topics_component.html' %}
+            </div>
+            <!-- Topics End -->
+
+            <!-- Room List Start -->
+            <div class="roomList">
+                <div class="profile">
+                    <div class="profile__avatar">
+                        <div class="avatar avatar--large active">
+                            <img src="{{user.avatar.url}}" />
+                        </div>
+                    </div>
+                    <div class="profile__info">
+                        <h3>{{user.first_name}} {{user.last_name}}</h3>
+                        <p>@{{user.username}}</p>
+                        {% if request.user == request.user %}
+                        <a href="{% url 'chats:chat' user.username %}" class="btn btn--main btn--pill">Send me a Message</a>
+                        {% endif %}
+                    </div>
+                    <div class="profile__about">
+                        <h3>About</h3>
+                        <p>
+                            {{user.bio}}
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur illo tenetur
+                            facilis sunt nemo debitis quisquam hic atque aut? Ducimus alias placeat optio
+                            accusamus repudiandae quis ab ex exercitationem rem?
+                        </p>
+                    </div>
+                </div>
+
+                <div class="roomList__header">
+                    <div>
+                        <h2>Stories authored by <a>{{user.username}}</a></h2>
+                    </div>
+                </div>
+                {% include 'feed_component.html' %}
+            </div>
+            <!-- Room List End -->
+
+            <!-- Activities Start -->
+            <div class="activities">
+                {% include 'activities_component.html' %}
+
+            </div>
+            <!-- Activities End -->
+        </div>
+    </div>
+    {% endblock content %}
+</section>

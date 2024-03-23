@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-20&#g8!6huo)xs%0wjz27q^f^&^hqoy1bo#+q6^8=3v#l1yq1v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["narrartive.viestar.tech", "*",
-                 "www.narrartive.viestar.tech", "localhost", "18.209.5.27"]
+ALLOWED_HOSTS = ["narrartive.reioms.com", "*",
+                 "www.narrartive.reioms.com", "localhost", "18.209.5.27"]
 
 # Application definition
 
